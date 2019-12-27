@@ -10,7 +10,6 @@ import fish.eyebrow.blog.backend.verticle.BlogBackendVerticle;
 import io.vertx.core.Verticle;
 import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonObject;
-import org.h2.jdbc.JdbcConnection;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

@@ -1,8 +1,8 @@
 package fish.eyebrow.blog.backend.handler;
 
 import static org.hamcrest.Matchers.emptyString;
-import static org.hamcrest.Matchers.equalTo;
-import static org.mockito.ArgumentMatchers.anyLong;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -22,13 +22,12 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.List;
-
 @ExtendWith(MockitoExtension.class)
-class BlogFetchHandlerTestCase {
+class BlogCreationHandlerTestCase {
 
     public static final String PATH = "http://localhost:8080/blog";
 
@@ -36,6 +35,8 @@ class BlogFetchHandlerTestCase {
     private BlogDao blogDao;
 
     private Vertx vertx;
+
+    private ArgumentCaptor<Post> postCaptor;
 
 
     @BeforeEach
@@ -51,6 +52,7 @@ class BlogFetchHandlerTestCase {
 
         Injector injector = Guice.createInjector(testModule);
         vertx = injector.getInstance(Vertx.class);
+        postCaptor = ArgumentCaptor.forClass(Post.class);
     }
 
 
@@ -61,67 +63,24 @@ class BlogFetchHandlerTestCase {
 
 
     @Test
-    void shouldRespondWithEmptyJsonWhenNoPostsExist() {
-        RestAssured
-                .when()
-                .get(PATH)
-                .then()
-                .body(equalTo(FileUtil.readFile("empty_response.json")));
+    void shouldRespondWith200AndInvokeBlogDaoInsertion() {
+        when(blogDao.insertPost(any(Post.class))).thenReturn(true);
 
-        verify(blogDao, times(1))
-                .getPostsInRange(Long.MIN_VALUE, Long.MAX_VALUE);
-    }
+        Post expected = new Post();
+        expected.setTitle("posterino");
 
-
-    @Test
-    void shouldRespondWithBlogPostsInJsonWhenPostsExist() {
-        Post post = new Post();
-        post.setId(1);
-        post.setTitle("B U I L D W A L L");
-
-        when(blogDao.getPostsInRange(anyLong(), anyLong())).thenReturn(List.of(post));
-
-        RestAssured
-                .when()
-                .get(PATH)
-                .then()
-                .body(equalTo(FileUtil.readFile("single_post_response.json")));
-
-        verify(blogDao, times(1))
-                .getPostsInRange(Long.MIN_VALUE, Long.MAX_VALUE);
-    }
-
-
-    @Test
-    void shouldRespondWith400WhenGivenInverseRange() {
         RestAssured
                 .given()
-                .param("start", 0)
-                .param("end", -1)
+                .body(FileUtil.readFile("new_post_request.json"))
                 .when()
-                .get(PATH)
+                .post(PATH)
                 .then()
-                .statusCode(400)
+                .statusCode(200)
                 .body(emptyString());
 
-        verify(blogDao, times(0))
-                .getPostsInRange(anyLong(), anyLong());
-    }
+        verify(blogDao, times(1)).insertPost(postCaptor.capture());
 
-
-    @Test
-    void shouldRespondWith400WhenGivenBadStart() {
-        RestAssured
-                .given()
-                .param("start", "bad")
-                .param("end", 0)
-                .when()
-                .get(PATH)
-                .then()
-                .statusCode(400)
-                .body(emptyString());
-
-        verify(blogDao, times(0))
-                .getPostsInRange(anyLong(), anyLong());
+        Post post = postCaptor.getValue();
+        assertEquals(expected.getTitle(), post.getTitle());
     }
 }

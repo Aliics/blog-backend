@@ -1,5 +1,6 @@
 package fish.eyebrow.blog.backend.model;
 
+import io.vertx.core.json.JsonObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,6 +29,14 @@ public class Post {
             LOGGER.error("Could not map result to Post");
             return null;
         }
+    }
+
+
+    public static Post of(JsonObject jsonObject) {
+        Post post = new Post();
+        post.setTitle(jsonObject.getString("title"));
+
+        return post;
     }
 
 

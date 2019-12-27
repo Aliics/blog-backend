@@ -10,8 +10,6 @@ import fish.eyebrow.blog.backend.verticle.BlogBackendVerticle;
 import io.vertx.core.DeploymentOptions;
 import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonObject;
-import org.h2.Driver;
-import org.h2.jdbc.JdbcConnection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,7 +17,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.Connection;
-import java.sql.ConnectionBuilder;
 import java.sql.DriverManager;
 
 public class BlogBackendModule extends AbstractModule {
