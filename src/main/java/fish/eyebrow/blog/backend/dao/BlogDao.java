@@ -3,6 +3,8 @@ package fish.eyebrow.blog.backend.dao;
 import com.google.inject.Inject;
 import fish.eyebrow.blog.backend.model.Post;
 import fish.eyebrow.blog.backend.util.FileUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -16,6 +18,11 @@ public class BlogDao {
 
     private static String SELECT_POSTS_WITH_RANGE = FileUtil
             .readFile("sql/select_posts_with_range.sql");
+
+    private static String INSERT_POSTS_INTO_POSTS = FileUtil
+            .readFile("sql/insert_post_into_posts.sql");
+
+    private static Logger LOGGER = LoggerFactory.getLogger(BlogDao.class);
 
     private Connection connection;
 
@@ -45,7 +52,22 @@ public class BlogDao {
             return posts;
         }
         catch (SQLException e) {
+            LOGGER.error("Exception occurred when fetching blog posts");
             return List.of();
+        }
+    }
+
+
+    public boolean insertPost(Post post) {
+        try {
+            PreparedStatement insertStatement = connection.prepareStatement(INSERT_POSTS_INTO_POSTS);
+            insertStatement.setString(1, post.getTitle());
+
+            return !insertStatement.execute();
+        }
+        catch (SQLException e) {
+            LOGGER.error("Exception occurred when inserting new blog post");
+            return false;
         }
     }
 }

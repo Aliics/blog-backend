@@ -1,6 +1,8 @@
 package fish.eyebrow.blog.backend.dao;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
@@ -12,6 +14,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -70,12 +73,40 @@ class BlogDaoTestCase {
     }
 
 
+    @Test
+    void shouldCreateNewPostIntoEmptyPostTable() throws SQLException {
+        Post post = new Post();
+        post.setTitle("creative title for a post");
+
+        boolean inserted = blogDao.insertPost(post);
+        ResultSet result = executeQuerySql("sql/select_all_posts.sql");
+
+        assertTrue(inserted);
+        assertNotNull(result);
+
+        result.next();
+        assertEquals(1, result.getLong("id"));
+        assertEquals("creative title for a post", result.getString("title"));
+    }
+
+
     private void executeUpdateSql(String fileName) {
         try {
             connection.prepareCall(FileUtil.readFile(fileName)).execute();
         }
         catch (SQLException e) {
             e.printStackTrace();
+        }
+    }
+
+
+    private ResultSet executeQuerySql(String fileName) {
+        try {
+            return connection.prepareCall(FileUtil.readFile(fileName)).executeQuery();
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+            return null;
         }
     }
 }
