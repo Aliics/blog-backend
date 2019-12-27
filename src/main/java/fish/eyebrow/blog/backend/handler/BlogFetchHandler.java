@@ -5,7 +5,6 @@ import fish.eyebrow.blog.backend.dao.BlogDao;
 import fish.eyebrow.blog.backend.model.Post;
 import io.vertx.core.Handler;
 import io.vertx.core.MultiMap;
-import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.RoutingContext;
 import org.slf4j.Logger;

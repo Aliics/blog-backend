@@ -5,6 +5,7 @@ import fish.eyebrow.blog.backend.model.Post;
 import fish.eyebrow.blog.backend.util.FileUtil;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -13,8 +14,8 @@ import java.util.Objects;
 
 public class BlogDao {
 
-    private static String SELECT_ALL_POSTS = FileUtil
-            .readFile("sql/select_all_posts.sql");
+    private static String SELECT_POSTS_WITH_RANGE = FileUtil
+            .readFile("sql/select_posts_with_range.sql");
 
     private Connection connection;
 
@@ -27,9 +28,11 @@ public class BlogDao {
 
     public List<Post> getPostsInRange(long start, long end) {
         try {
-            ResultSet result = connection
-                    .prepareStatement(SELECT_ALL_POSTS)
-                    .executeQuery();
+            PreparedStatement selectStatement = connection.prepareStatement(SELECT_POSTS_WITH_RANGE);
+            selectStatement.setLong(1, start);
+            selectStatement.setLong(2, end);
+
+            ResultSet result = selectStatement.executeQuery();
 
             List<Post> posts = new ArrayList<>();
             while (result.next()) {

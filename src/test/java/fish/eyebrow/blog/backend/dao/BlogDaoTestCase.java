@@ -7,6 +7,7 @@ import com.google.inject.Injector;
 import fish.eyebrow.blog.backend.guice.BlogBackendModule;
 import fish.eyebrow.blog.backend.model.Post;
 import fish.eyebrow.blog.backend.util.FileUtil;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -31,6 +32,12 @@ class BlogDaoTestCase {
     }
 
 
+    @AfterEach
+    void tearDown() {
+        executeUpdateSql("sql/drop_posts_table.sql");
+    }
+
+
     @Test
     void shouldReturnTwoPostsWhenQueryingAllPosts() {
         executeUpdateSql("sql/insert_two_posts.sql");
@@ -46,6 +53,20 @@ class BlogDaoTestCase {
 
         assertEquals(2, post1.getId());
         assertEquals("another cool post", post1.getTitle());
+    }
+
+
+    @Test
+    void shouldReturnOneOfTwoPostsWhenOneIsOutOfRange() {
+        executeUpdateSql("sql/insert_two_posts.sql");
+
+        List<Post> actual = blogDao.getPostsInRange(2, Long.MAX_VALUE);
+        Post post = actual.get(0);
+
+        assertEquals(1, actual.size());
+
+        assertEquals(2, post.getId());
+        assertEquals("another cool post", post.getTitle());
     }
 
 
