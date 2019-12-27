@@ -6,6 +6,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public class TestUtil {
+
     public static String readFile(String fileName) {
         Path filePath = Paths.get(ClassLoader.getSystemResource(fileName).getPath());
         try {

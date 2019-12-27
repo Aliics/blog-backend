@@ -3,7 +3,6 @@ package fish.eyebrow.blog.backend.verticle;
 import com.google.inject.Inject;
 import fish.eyebrow.blog.backend.handler.BlogFetchHandler;
 import io.vertx.core.AbstractVerticle;
-import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.Router;
 
 public class BlogBackendVerticle extends AbstractVerticle {
@@ -18,7 +17,7 @@ public class BlogBackendVerticle extends AbstractVerticle {
 
 
     @Override
-    public void start() throws Exception {
+    public void start() {
         Router router = Router.router(vertx);
         router.get("/blog").handler(blogFetchHandler);
 

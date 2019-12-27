@@ -6,7 +6,6 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Inject;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
-import fish.eyebrow.blog.backend.handler.BlogFetchHandler;
 import fish.eyebrow.blog.backend.verticle.BlogBackendVerticle;
 import io.vertx.core.DeploymentOptions;
 import io.vertx.core.Vertx;
