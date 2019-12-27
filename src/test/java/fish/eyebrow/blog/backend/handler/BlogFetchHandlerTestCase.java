@@ -66,7 +66,7 @@ class BlogFetchHandlerTestCase {
                 .when()
                 .get(PATH)
                 .then()
-                .body(equalTo(FileUtil.readFile("empty_response.json")));
+                .body(equalTo(FileUtil.readFile("response/empty_response.json")));
 
         verify(blogDao, times(1))
                 .getPostsInRange(Long.MIN_VALUE, Long.MAX_VALUE);
@@ -85,7 +85,7 @@ class BlogFetchHandlerTestCase {
                 .when()
                 .get(PATH)
                 .then()
-                .body(equalTo(FileUtil.readFile("single_post_response.json")));
+                .body(equalTo(FileUtil.readFile("response/single_post_response.json")));
 
         verify(blogDao, times(1))
                 .getPostsInRange(Long.MIN_VALUE, Long.MAX_VALUE);

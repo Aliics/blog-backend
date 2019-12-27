@@ -71,7 +71,7 @@ class BlogCreationHandlerTestCase {
 
         RestAssured
                 .given()
-                .body(FileUtil.readFile("new_post_request.json"))
+                .body(FileUtil.readFile("request/new_post_request.json"))
                 .when()
                 .post(PATH)
                 .then()
