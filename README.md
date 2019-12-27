@@ -34,4 +34,4 @@ When writing a backend I had three language options: _Rust_, _Kotlin_, and
 _Java_. My reasons are not permanent or even the perfect decision, but I
 certainly enjoy all of these languages and would be proficient enough in each
 to develop something similar. I chose Java because of simplicity and because
-out of these languages, Java is the one I'm more experienced in.
+out of these languages, Java is the one I'm most experienced in.
