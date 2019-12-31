@@ -6,6 +6,8 @@ import fish.eyebrow.blog.backend.model.Post;
 import io.vertx.core.Handler;
 import io.vertx.ext.web.RoutingContext;
 
+import java.util.Objects;
+
 public class BlogCreationHandler implements Handler<RoutingContext> {
 
     private BlogDao blogDao;
@@ -20,6 +22,10 @@ public class BlogCreationHandler implements Handler<RoutingContext> {
     @Override
     public void handle(RoutingContext event) {
         Post post = Post.of(event.getBodyAsJson());
+        if (Objects.isNull(post)) {
+            event.response().setStatusCode(400).end();
+            return;
+        }
 
         if (!blogDao.insertPost(post)) {
             event.response().setStatusCode(400).end();

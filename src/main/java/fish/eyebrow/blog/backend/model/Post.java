@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Objects;
 
 public class Post {
 
@@ -35,6 +36,10 @@ public class Post {
     public static Post of(JsonObject jsonObject) {
         Post post = new Post();
         post.setTitle(jsonObject.getString("title"));
+
+        if (Objects.isNull(post.title)) {
+            return null;
+        }
 
         return post;
     }

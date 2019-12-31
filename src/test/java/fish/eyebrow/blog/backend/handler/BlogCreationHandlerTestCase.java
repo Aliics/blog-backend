@@ -83,4 +83,19 @@ class BlogCreationHandlerTestCase {
         Post post = postCaptor.getValue();
         assertEquals(expected.getTitle(), post.getTitle());
     }
+
+
+    @Test
+    void shouldRespondWith400WhenPostCannotDeserialize() {
+        RestAssured
+                .given()
+                .body(FileUtil.readFile("request/bad_post_request.json"))
+                .when()
+                .post(PATH)
+                .then()
+                .statusCode(400)
+                .body(emptyString());
+
+        verify(blogDao, times(0)).insertPost(any(Post.class));
+    }
 }
