@@ -41,6 +41,13 @@ Run the compiled jar on your machine. _This might result in some conflicts, for
 example JRE version._
 > java -jar build/libs/blog-backend.jar
 
+##### Convenience
+
+Those two ways are nice and all, but sometimes... you just want it to build
+and run in just a single small execution. Fear not! For both of the above have
+are packed into little scripts: [docker](./src/main/scripts/docker_run.sh) and 
+[local](./src/main/scripts/local_run.sh)
+
 # How to test
 
 All tests are written in Java using Junit, so just use gradle.
