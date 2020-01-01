@@ -1,4 +1,4 @@
-FROM openjdk:11.0.5-jre-stretch
+FROM openjdk:11.0.5-jre-slim
 
 ENV APP_HOME /app
 CMD mkdir ${APP_HOME}
