@@ -14,11 +14,32 @@ Jump inside the cloned repo.
 # How to run
 
 For building the jar with all dependencies I decided on the `shadowJar` plugin
-for Gradle.
+for Gradle. _(both the Docker route and the local route require this step)_
 > ./gradlew shadowJar
 
-Now you can just execute the created jar!
-> java -jar build/libs/blog-backend-1.1.0-SNAPSHOT-all.jar
+##### Use Docker
+
+Like most sane developers in 2020 I decided to **Dockerize** this entire
+process. This way, just about no matter what you are running you should be able
+to get this off the ground.
+
+> docker build . -t blog-backend:1.1.0-SNAPSHOT
+
+And now you have a fancy image made with a nice version tag, it's just as simple
+to run this image in a Docker container.
+
+> docker run -p 8080:8080 blog-backend:1.1.0-SNAPSHOT
+
+I am fairly certain this should work on all operating systems.
+
+##### Alternatively
+
+Sometimes it is quicker to not have to run docker build every time, so you can
+just run the jar on your machine.
+
+Run the compiled jar on your machine. _This might result in some conflicts, for
+example JRE version._
+> java -jar build/libs/blog-backend.jar
 
 # How to test
 

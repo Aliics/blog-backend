@@ -33,8 +33,10 @@ dependencies {
 }
 
 shadowJar {
+    archiveFileName = "${rootProject.name}.${archiveExtension.get()}"
+
     manifest {
-        attributes("Main-Class": "fish.eyebrow.blog.backend.Application")
+        attributes('Main-Class': 'fish.eyebrow.blog.backend.Application')
     }
 }
 
